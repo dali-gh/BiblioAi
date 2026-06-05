@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Emprunter — {{ book.titre }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-arrow-right-circle me-2" style="color: var(--accent)"></i>Emprunter un livre</h1>
+        <p>Confirmer votre emprunt</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="text-muted fw-bold mb-3"><i class="bi bi-book me-1"></i>Livre sélectionné</h6>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="fw-bold">{{ book.titre }}</div>
+                            <div class="text-muted small">{{ book.auteur }} · {{ book.categorie }}</div>
+                        </div>
+                        <span class="badge badge-{{ book.statut.value }} text-white align-self-start">
+                            {{ book.statut.value | capitalize }}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-muted small">
+                        <i class="bi bi-stack me-1"></i>{{ book.quantite_disponible }} exemplaire(s) disponible(s)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body p-4">
+                    {% if error %}
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" action="/borrows/new/{{ book.id }}">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Date de retour prévue <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" name="date_retour_prevue"
+                                   value="{{ default_return }}" min="{{ default_return }}" required>
+                            <div class="form-text">Délai recommandé : 2 semaines.</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-lg me-1"></i>Confirmer l'emprunt
+                            </button>
+                            <a href="/books/{{ book.id }}" class="btn btn-outline-secondary">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

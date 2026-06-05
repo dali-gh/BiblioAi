@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}{% if book %}Modifier{% else %}Ajouter{% endif %} un livre{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>
+            <i class="bi bi-{% if book %}pencil{% else %}plus-circle{% endif %} me-2" style="color: var(--accent)"></i>
+            {% if book %}Modifier le livre{% else %}Ajouter un livre{% endif %}
+        </h1>
+        <p>{% if book %}Modifiez les informations du livre{% else %}Ajoutez un nouveau livre au catalogue{% endif %}</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body p-4">
+                    {% if error %}
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" action="/books/{% if book %}{{ book.id }}/edit{% else %}add{% endif %}">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Titre <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="titre"
+                                   value="{{ book.titre if book else '' }}" required placeholder="Titre du livre">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Auteur <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="auteur"
+                                       value="{{ book.auteur if book else '' }}" required placeholder="Nom de l'auteur">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Catégorie <span class="text-danger">*</span></label>
+                                <select class="form-select" name="categorie" required>
+                                    {% set categories = ["Roman", "Science", "Histoire", "Informatique", "Philosophie", "Poésie", "Biographie", "Jeunesse", "Autre"] %}
+                                    <option value="">Choisir une catégorie…</option>
+                                    {% for cat in categories %}
+                                    <option value="{{ cat }}" {% if book and book.categorie == cat %}selected{% endif %}>{{ cat }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Année de publication <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" name="annee_publication"
+                                       value="{{ book.annee_publication if book else '' }}"
+                                       min="1000" max="2100" required placeholder="Ex: 1862">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Quantité totale <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" name="quantite_totale"
+                                       value="{{ book.quantite_totale if book else 1 }}"
+                                       min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Description <span class="text-muted fw-normal">(optionnel)</span></label>
+                            <textarea class="form-control" name="description" rows="3"
+                                      placeholder="Résumé ou note sur le livre…">{{ book.description if book and book.description else '' }}</textarea>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1"></i>
+                                {% if book %}Enregistrer les modifications{% else %}Ajouter le livre{% endif %}
+                            </button>
+                            <a href="/books" class="btn btn-outline-secondary">
+                                <i class="bi bi-x me-1"></i>Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

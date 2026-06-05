@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.titre }} — Bibliothèque{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="/books" class="text-white-50">Catalogue</a></li>
+                <li class="breadcrumb-item active text-white">{{ book.titre }}</li>
+            </ol>
+        </nav>
+        <h1>{{ book.titre }}</h1>
+        <p>{{ book.auteur }} · {{ book.annee_publication }}</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-8">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width:40%">ID</td>
+                                        <td>#{{ book.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Titre</td>
+                                        <td>{{ book.titre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Auteur</td>
+                                        <td>{{ book.auteur }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Catégorie</td>
+                                        <td><span class="badge bg-secondary">{{ book.categorie }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Année</td>
+                                        <td>{{ book.annee_publication }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Disponibilité</td>
+                                        <td>
+                                            <span class="badge badge-{{ book.statut.value }} text-white">
+                                                {{ book.statut.value | capitalize }}
+                                            </span>
+                                            <span class="text-muted small ms-2">{{ book.quantite_disponible }}/{{ book.quantite_totale }} exemplaire(s)</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            {% if book.description %}
+                            <div class="mt-2 p-3 bg-light rounded">
+                                <h6 class="fw-bold text-muted mb-1">Description</h6>
+                                <p class="mb-0">{{ book.description }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4 d-flex flex-column gap-2 align-items-start">
+                            {% if book.quantite_disponible > 0 %}
+                            <a href="/borrows/new/{{ book.id }}" class="btn btn-success w-100">
+                                <i class="bi bi-arrow-right-circle me-1"></i>Emprunter
+                            </a>
+                            {% else %}
+                            <button class="btn btn-secondary w-100" disabled>
+                                <i class="bi bi-x-circle me-1"></i>Indisponible
+                            </button>
+                            {% endif %}
+
+                            {% if user.is_admin %}
+                            <a href="/books/{{ book.id }}/edit" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-pencil me-1"></i>Modifier
+                            </a>
+                            <form method="post" action="/books/{{ book.id }}/delete"
+                                  onsubmit="return confirm('Supprimer ce livre ?')" class="w-100">
+                                <button type="submit" class="btn btn-outline-danger w-100">
+                                    <i class="bi bi-trash me-1"></i>Supprimer
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            <a href="/books" class="btn btn-outline-secondary w-100">
+                                <i class="bi bi-arrow-left me-1"></i>Retour
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

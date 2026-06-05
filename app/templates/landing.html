@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioAi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1a3c5e; --accent: #c8a45a; --paper: #FDFAF4; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a3c5e 0%, #2a5f96 50%, #1a3c5e 100%);
+            display: flex; align-items: center; justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        /* ── Book shell ── */
+        .book-shell {
+            display: flex;
+            border-radius: 4px 16px 16px 4px;
+            box-shadow: -6px 0 0 0 #8B6340, -8px 0 0 0 #6B4A28,
+                        0 20px 60px rgba(0,0,0,0.35);
+            min-height: 540px;
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+
+        .book-spine {
+            width: 30px;
+            background: linear-gradient(to right, #6B4A28, #8B6340);
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .book-spine span {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 11px; font-weight: 700;
+            color: #D4A96A;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .book-page {
+            flex: 1;
+            background: var(--paper);
+            border-left: 3px solid #E8DCC8;
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        /* page shadow near spine */
+        .book-page::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 16px;
+            background: linear-gradient(to right, rgba(0,0,0,0.07), transparent);
+            pointer-events: none;
+        }
+
+        /* ruled lines */
+        .book-page::after {
+            content: '';
+            position: absolute;
+            inset: 80px 0 0 0;
+            background-image: repeating-linear-gradient(
+                transparent, transparent 31px,
+                rgba(139,96,64,0.08) 31px, rgba(139,96,64,0.08) 32px
+            );
+            pointer-events: none;
+        }
+
+        /* ── Content ── */
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #F0E8D0;
+            border: 0.5px solid var(--accent);
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 12px; color: #7A5020; font-weight: 600;
+            margin-bottom: 1.25rem; width: fit-content;
+            position: relative; z-index: 1;
+        }
+
+        .hero-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 2rem; line-height: 1.2;
+            color: var(--primary); margin: 0 0 0.75rem;
+            position: relative; z-index: 1;
+        }
+
+        .hero-title em { font-style: normal; color: var(--accent); }
+
+        .hero-desc {
+            font-size: 0.95rem; color: #5a4a35; line-height: 1.7;
+            margin: 0 0 1.5rem;
+            position: relative; z-index: 1;
+        }
+
+        .features-row {
+            display: flex; gap: 10px; flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            position: relative; z-index: 1;
+        }
+
+        .feature-chip {
+            background: #F5EDD8;
+            border: 0.5px solid #D4B87A;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 12px; color: #5a3a18;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .feature-chip i { color: var(--accent); font-size: 16px; }
+
+        .divider { border: none; border-top: 1px solid #D4C4A0; margin: 1.25rem 0; }
+
+        .stats-row {
+            display: flex; gap: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative; z-index: 1;
+        }
+
+        .stat-num {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem; color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 10px; color: #8B7050;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .cta-row {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            margin-top: auto;
+            position: relative; z-index: 1;
+        }
+
+        .btn-book-primary {
+            background: var(--primary); color: #fff;
+            border: none; border-radius: 8px;
+            padding: 10px 24px; font-size: 0.9rem; font-weight: 600;
+            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: background 0.15s;
+        }
+
+        .btn-book-primary:hover { background: #14304d; color: #fff; }
+
+        .btn-book-outline {
+            background: transparent; color: var(--primary);
+            border: 2px solid var(--primary); border-radius: 8px;
+            padding: 10px 24px; font-size: 0.9rem; font-weight: 600;
+            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: background 0.15s;
+        }
+
+        .btn-book-outline:hover { background: rgba(26,60,94,0.08); color: var(--primary); }
+
+        .page-number {
+            position: absolute; bottom: 14px; right: 20px;
+            font-size: 11px; color: #B09060; font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="book-shell">
+    <div class="book-spine">
+        <span>Bibliothèque Intelligente</span>
+    </div>
+
+    <div class="book-page">
+        <div class="hero-badge">
+            <i class="bi bi-stars"></i>
+            Propulsé par l'IA · Gemini 2.5 Flash
+        </div>
+
+        <h1 class="hero-title">
+            Votre bibliothèque <em>intelligente</em>
+        </h1>
+
+        <p class="hero-desc">
+            Gérez vos livres, empruntez en un clic et posez vos questions à notre assistant IA qui connaît tout votre catalogue. Simple, rapide, élégant.
+        </p>
+
+        <div class="features-row">
+            <div class="feature-chip">
+                <i class="bi bi-collection-fill"></i> Catalogue complet
+            </div>
+            <div class="feature-chip">
+                <i class="bi bi-arrow-left-right"></i> Système d'emprunt
+            </div>
+            <div class="feature-chip">
+                <i class="bi bi-robot"></i> Chatbot IA
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="stats-row">
+            <div>
+                <span class="stat-num">{{ total_books or 0 }}</span>
+                <span class="stat-label">Livres</span>
+            </div>
+            <div>
+                <span class="stat-num">{{ total_users or 0 }}</span>
+                <span class="stat-label">Users</span>
+            </div>
+            <div>
+                <span class="stat-num">{{ total_emprunts or 0 }}</span>
+                <span class="stat-label">Emprunts</span>
+            </div>
+            <div>
+                <span class="stat-num">{{ total_category or 0 }}</span>
+                <span class="stat-label">Category</span>
+            </div>
+            <div>
+                <span class="stat-num">24/7</span>
+                <span class="stat-label">Disponible</span>
+            </div>
+            <div>
+                <span class="stat-num">IA</span>
+                <span class="stat-label">Assistant</span>
+            </div>
+        </div>
+
+        <div class="cta-row">
+            <a href="/login" class="btn-book-primary">
+                <i class="bi bi-box-arrow-in-right"></i> Se connecter
+            </a>
+            <a href="/register" class="btn-book-outline">
+                <i class="bi bi-person-plus"></i> Créer un compte
+            </a>
+        </div>
+
+        <span class="page-number">— 1 —</span>
+    </div>
+</div>
+
+</body>
+</html>
