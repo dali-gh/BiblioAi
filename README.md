@@ -1,4 +1,4 @@
-# 📚 Bibliothèque Intelligente — FastAPI + Bootstrap + SQLite + Gemini AI
+# Bibliothèque Intelligente — FastAPI + Bootstrap + SQLite + Gemini AI
 
 Projet semestriel Python — AU 2025-2026  
 **Stack** : FastAPI · Bootstrap 5 · Jinja2 · SQLite · SQLAlchemy · Google Gemini AI  
@@ -7,7 +7,7 @@ Projet semestriel Python — AU 2025-2026
 
 ---
 
-## 🗂️ Structure du projet
+## Structure du projet
 
 ```
 bibliotheque/
@@ -49,7 +49,7 @@ bibliotheque/
 
 
 
-## 🔐 Authentification
+## Authentification
 
 L'authentification est basée sur les **sessions cookie** (ItsDangerous / Starlette SessionMiddleware).  
 Pas de JWT, pas de token complexe — simple et efficace pour une application web.
@@ -61,7 +61,7 @@ Pas de JWT, pas de token complexe — simple et efficace pour une application we
 
 ---
 
-## 🤖 Chatbot IA 
+## Chatbot IA 
 
 Le chatbot utilise **Google Gemini 1.5 Flash** (gratuit).  
 À chaque question, il reçoit en contexte le catalogue complet de la bibliothèque et répond en français avec des données réelles.
@@ -74,7 +74,7 @@ Exemples de questions supportées :
 
 ---
 
-## 📦 Technologies utilisées
+## Technologies utilisées
 
 | Composant      | Technologie            |
 |----------------|------------------------|
