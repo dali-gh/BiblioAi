@@ -53,7 +53,16 @@ def root():
 # ── Seed default admin on first run ──────────────────────────────────────────
 from app.database import SessionLocal
 from app.services.auth_service import get_user_by_username, create_user
-
+@app.on_event("startup")
+def seed_admin():
+    db = SessionLocal()
+    try:
+        if not get_user_by_username(db, "admin"):
+            create_user(db, username="admin", email="admin@bibliotheque.com",
+                        password="admin123", is_admin=True)
+            print("Compte admin créé")
+    finally:
+        db.close()
 
 
 @app.exception_handler(_LoginRedirect)
