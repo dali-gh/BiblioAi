@@ -53,7 +53,7 @@ class BookCreate(BaseModel):
     @field_validator("annee_publication")
     @classmethod
     def valid_year(cls, v: int) -> int:
-        if v < 1000 or v > 2100:
+        if v < 1000 or v > 2027:
             raise ValueError("Année invalide")
         return v
 

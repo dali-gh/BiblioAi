@@ -163,16 +163,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if '/chat' in request.url.path %}active{% endif %}" href="/chat">
-                        <i class="bi bi-robot me-1"></i>Chatbot IA
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link {% if request.url.path == '/admin/logs' %}active{% endif %}" href="/admin/logs">
                         <i class="bi bi-shield-lock me-1"></i>Audit Logs
                     </a>
                 </li>
                 {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link {% if '/chat' in request.url.path %}active{% endif %}" href="/chat">
+                        <i class="bi bi-robot me-1"></i>Chatbot IA
+                    </a>
+                </li>
             </ul>
             <div class="d-flex align-items-center gap-3">
                 <span class="text-white-50 small">

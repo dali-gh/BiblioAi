@@ -14,7 +14,7 @@ def get_all_books(db: Session, search: str = "") -> list[Book]:
                 Book.categorie.ilike(f"%{search}%"),
             )
         )
-    return query.order_by(Book.titre).all()
+    return query.order_by(Book.id).all()
 
 
 def get_book_by_id(db: Session, book_id: int) -> Book | None:
